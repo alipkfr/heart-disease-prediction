@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Heart Disease Prediction</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- مكتبة particles.js -->
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    /* خلفية particles */
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      z-index: 0;
+      background-color: #121212;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      color: #ffffff;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      cursor: default;
+      position: relative;
+      z-index: 1;
+      background: transparent;
+    }
+    nav {
+      background-color: #ffffff;
+      color: #2a5298;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px solid #2a5298;
+      position: relative;
+      z-index: 10;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+      border-radius: 0 0 15px 15px;
+    }
+    .nav-title {
+      font-size: 24px;
+      font-weight: bold;
+      color: #2a5298;
+    }
+    .logout-btn {
+      background: #2a5298;
+      color: #fff;
+      border: none;
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 3px 8px rgba(255,20,147,0.6);
+    }
+    .logout-btn:hover {
+      background: #ff1493;
+      box-shadow: 0 5px 15px rgba(255,20,147,0.9);
+    }
+
+    /* --------- التصميم الجديد للترحيب --------- */
+    .hero-modern {
+      background: rgba(255 255 255 / 0.05);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      max-width: 700px;
+      margin: 60px auto 40px;
+      padding: 40px 30px;
+      box-shadow: 0 10px 40px rgba(255, 20, 147, 0.1);
+      text-align: center;
+      color: #fff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      position: relative;
+      z-index: 5;
+      user-select: none;
+    }
+    .hero-modern h1 {
+      font-weight: 900;
+      font-size: 3rem;
+      margin-bottom: 12px;
+    }
+    .hero-modern .username {
+      color: #ff1493;
+    }
+    .accuracy {
+      font-size: 1.1rem;
+      letter-spacing: 0.03em;
+      margin-bottom: 32px;
+      font-weight: 500;
+      color: #ddd;
+    }
+    .accuracy strong {
+      color: #ff1493;
+    }
+    .accuracy-value {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #ff6fb5;
+    }
+    .buttons-group {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      padding: 14px 28px;
+      border-radius: 35px;
+      font-size: 1.2rem;
+      font-weight: 700;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      user-select: none;
+    }
+    .btn-primary {
+      background: linear-gradient(45deg, #ff416c, #ff4b2b);
+      color: #fff;
+      box-shadow: 0 6px 15px rgba(255, 65, 108, 0.6);
+    }
+    .btn-primary:hover {
+      filter: brightness(1.1);
+      transform: scale(1.05);
+    }
+    .btn-outline {
+      background: transparent;
+      border: 2px solid #ff1493;
+      color: #ff1493;
+    }
+    .btn-outline:hover {
+      background: #ff1493;
+      color: white;
+      box-shadow: 0 6px 15px rgba(255, 20, 147, 0.6);
+      transform: scale(1.05);
+    }
+    .btn-lg {
+      min-width: 150px;
+      justify-content: center;
+    }
+    .icon {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+    }
+    
+    /* تأثير 3D للكروت في قسم Learn More */
+    .articles .card {
+      position: relative;
+      width: 350px;
+      height: 450px;
+      border-radius: 20px;
+      background: linear-gradient(45deg, #1a1a1a, #262626);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      overflow: hidden;
+      box-shadow: 0 0 20px rgba(0,0,0,0.3), inset 0 0 20px rgba(0,0,0,0.2);
+      cursor: pointer;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 10px;
+      text-align: center;
+      font-weight: 600;
+      user-select: none;
+    }
+    .articles .card:hover {
+      transform: perspective(800px) rotateX(15deg) rotateY(10deg);
+      box-shadow: 0 0 40px #ff1493, inset 0 0 40px #ff1493;
+    }
+    .articles .card img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+    }
+    .articles .card-title {
+      font-weight: 900;
+      font-size: 26px;
+      color: #ff1493;
+      margin-bottom: 10px;
+      letter-spacing: 0.04em;
+    }
+    .articles .card-text {
+      font-weight: 500;
+      font-size: 18px;
+      color: #ddd;
+      margin-bottom: 14px;
+    }
+
+    .articles {
+      padding: 40px 30px;
+      max-width: 1200px;
+      margin: 0 auto 60px;
+      position: relative;
+      z-index: 5;
+      text-align: center;
+    }
+    .articles h2 {
+      margin-bottom: 35px;
+    }
+
+    footer {
+      background-color: #111;
+      padding: 40px 30px;
+      color: #ccc;
+      text-align: center;
+      font-size: 16px;
+      position: relative;
+      z-index: 5;
+      user-select: none;
+    }
+    footer a {
+      color: #ff1493;
+      font-weight: 700;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      cursor: pointer;
+    }
+    footer a:hover {
+      color: #ff4b2b;
+      text-decoration: underline;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(40px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    #cursor-heart {
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 30px;
+      height: 30px;
+      pointer-events: none;
+      background: url('https://cdn-icons-png.flaticon.com/512/833/833472.png') no-repeat center;
+      background-size: contain;
+      z-index: 9999;
+      animation: pulse 1s infinite;
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.3); }
+      100% { transform: scale(1); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- خلفية الشبكة المتحركة -->
+  <div id="particles-js"></div>
+
+  <div id="cursor-heart"></div>
+
+  <nav>
+    <div class="nav-title">💓 Heart Disease Predictor</div>
+    <form action="/logout" method="POST" class="m-0">
+      <button class="logout-btn">Logout</button>
+    </form>
+  </nav>
+
+  <!-- هنا استخدمنا التصميم الجديد بدل hero-section -->
+  <section class="hero-modern">
+    <div class="hero-content">
+      <h1>Welcome, <span class="username">{{ name }}</span>!</h1>
+      <p class="accuracy">
+        <span>AI-powered Heart Disease Prediction</span> &bull; 
+        <strong>Accuracy:</strong> <span class="accuracy-value">99.03%</span>
+      </p>
+      <div class="buttons-group">
+        <a href="{{ url_for('find') }}" class="btn btn-primary btn-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="8"/></svg>
+          Check Now
+        </a>
+        <a href="{{ url_for('history') }}" class="btn btn-outline btn-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/></svg>
+          View History
+        </a>
+        <a href="{{ url_for('faq') }}" class="btn btn-outline btn-lg">
+          <svg xmlns="http://www.w3.org/2000/svg" class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 1.5-3 2.5-3 2.5"/></svg>
+          FAQ
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="articles container">
+    <h2>Learn More About Heart Health</h2>
+    <div class="row justify-content-center gap-4">
+      <div class="col-auto p-0">
+        <div class="card" onclick="window.open('https://www.who.int/health-topics/cardiovascular-diseases#tab=tab_1', '_blank')" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') this.click()">
+          <img src="https://i.pinimg.com/564x/52/72/74/5272749836d772a96f7460e98c05efcc.jpg" alt="Heart Info" />
+          <h5 class="card-title">Understanding Heart Diseases</h5>
+          <p class="card-text">Heart disease is the leading cause of death. Learn how it develops and how to reduce your risk.</p>
+        </div>
+      </div>
+      <div class="col-auto p-0">
+        <div class="card" onclick="window.open('https://medlineplus.gov/howtopreventheartdisease.html', '_blank')" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') this.click()">
+          <img src="https://i.pinimg.com/564x/29/48/d7/2948d79f2576df67097f143b233b7dd5.jpg" alt="Prevention" />
+          <h5 class="card-title">Prevention Techniques</h5>
+          <p class="card-text">Simple lifestyle changes and regular screening can help avoid heart-related issues.</p>
+        </div>
+      </div>
+      <div class="col-auto p-0">
+        <div class="card" onclick="window.open('https://www.cdc.gov/ncbddd/stroke/facts.html', '_blank')" role="button" tabindex="0" onkeypress="if(event.key === 'Enter') this.click()">
+          <img src="https://i.pinimg.com/564x/18/ce/3d/18ce3d6ef27dd4dd1f5d6b9b813802cd.jpg" alt="Tips" />
+          <h5 class="card-title">Daily Heart Tips</h5>
+          <p class="card-text">Boost your heart health with easy tips you can add to your daily routine.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Built with ❤️ for your health</p>
+    <p>Author: Abdalla Ali</p>
+    <p><a href="#">Back to top</a></p>
+  </footer>
+
+  <script>
+    const cursorHeart = document.getElementById('cursor-heart');
+    document.addEventListener('mousemove', e => {
+      cursorHeart.style.left = (e.pageX - 5) + 'px';
+      cursorHeart.style.top = (e.pageY - 5) + 'px';
+    });
+
+    particlesJS('particles-js',
+    {
+      "particles": {
+        "number": {
+          "value": 70,
+          "density": {
+            "enable": true,
+            "value_area": 1000
+          }
+        },
+        "color": {
+          "value": "#ff1493"
+        },
+        "shape": {
+          "type": "edge"
+        },
+        "opacity": {
+          "value": 0.6,
+          "random": false
+        },
+        "size": {
+          "value": 30,
+          "random": true
+        },
+        "line_linked": {
+          "enable": true,
+          "distance": 350,
+          "color": "#ff1493",
+          "opacity": 0.8,
+          "width": 3
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.2,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "bounce": false
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": {
+            "enable": true,
+            "mode": "grab"
+          },
+          "onclick": {
+            "enable": true,
+            "mode": "push"
+          }
+        },
+        "modes": {
+          "grab": {
+            "distance": 300,
+            "line_linked": {
+              "opacity": 1
+            }
+          },
+          "push": {
+            "particles_nb": 5
+          }
+        }
+      },
+      "retina_detect": true
+    });    
+
+  </script>
+
+</body>
+</html>

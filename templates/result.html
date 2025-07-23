@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Heart Disease Prediction Result</title>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- إضافة مكتبة particles.js للشبكة -->
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+    <style>
+        /* خلفية الشبكة تغطي الصفحة كاملة */
+        #particles-js {
+          position: fixed;
+          width: 100%;
+          height: 100%;
+          top: 0;
+          left: 0;
+          z-index: 0;
+          background-color: #121212; /* لون غامق للخلفية */
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+            background: transparent;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            text-align: center;
+            padding: 30px;
+            background: rgba(0,0,0,0.5); /* خلفية شفافة داكنة */
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 30px rgba(255,20,147,0.6);
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .safe {
+            background-color: rgba(212, 237, 218, 0.85);
+            color: #155724;
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .danger {
+            background-color: rgba(248, 215, 218, 0.85);
+            color: #721c24;
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .emoji {
+            font-size: 80px;
+            margin-bottom: 20px;
+        }
+
+        .back-button {
+            margin-top: 20px;
+            padding: 12px 25px;
+            background: linear-gradient(45deg, #ff1493, #ff6a00);
+            color: #fff;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 18px;
+            transition: background 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255,20,147,0.7);
+        }
+        .back-button:hover {
+            background: linear-gradient(45deg, #ff6a00, #ff1493);
+        }
+
+        /* شريط النسبة مع التحذير */
+        .progress-wrapper {
+            width: 100%;
+            background: #33001a;
+            border-radius: 30px;
+            overflow: hidden;
+            margin: 15px 0 25px 0;
+            box-shadow: inset 0 0 8px rgba(255,20,147,0.7);
+        }
+        .progress-bar {
+            height: 25px;
+            background: linear-gradient(90deg, #ff1493, #ff6a00);
+            width: 0%;
+            line-height: 25px;
+            color: #fff;
+            font-weight: bold;
+            text-align: center;
+            transition: width 1s ease-in-out;
+            user-select: none;
+        }
+
+        /* قسم التوصيات */
+        .recommendation {
+            background-color: #1a0014;
+            padding: 20px;
+            border-radius: 12px;
+            color: #ffb6c1;
+            box-shadow: 0 0 15px #ff1493;
+            font-weight: 600;
+            text-align: left;
+            user-select: text;
+        }
+
+        /* From Uiverse.io by mrhyddenn */
+        .button {
+          -moz-appearance: none;
+          -webkit-appearance: none;
+          appearance: none;
+          border: none;
+          background: none;
+          color: #0f1923;
+          cursor: pointer;
+          position: relative;
+          padding: 8px;
+          margin-bottom: 20px;
+          text-transform: uppercase;
+          font-weight: bold;
+          font-size: 14px;
+          transition: all .15s ease;
+        }
+
+        .button::before,
+        .button::after {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 0;
+          left: 0;
+          height: calc(50% - 5px);
+          border: 1px solid #7D8082;
+          transition: all .15s ease;
+        }
+
+        .button::before {
+          top: 0;
+          border-bottom-width: 0;
+        }
+
+        .button::after {
+          bottom: 0;
+          border-top-width: 0;
+        }
+
+        .button:active,
+        .button:focus {
+          outline: none;
+        }
+
+        .button:active::before,
+        .button:active::after {
+          right: 3px;
+          left: 3px;
+        }
+
+        .button:active::before {
+          top: 3px;
+        }
+
+        .button:active::after {
+          bottom: 3px;
+        }
+
+        .button_lg {
+          position: relative;
+          display: block;
+          padding: 10px 20px;
+          color: #fff;
+          background-color: #0f1923;
+          overflow: hidden;
+          box-shadow: inset 0px 0px 0px 1px transparent;
+        }
+
+        .button_lg::before {
+          content: '';
+          display: block;
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 2px;
+          height: 2px;
+          background-color: #0f1923;
+        }
+
+        .button_lg::after {
+          content: '';
+          display: block;
+          position: absolute;
+          right: 0;
+          bottom: 0;
+          width: 4px;
+          height: 4px;
+          background-color: #0f1923;
+          transition: all .2s ease;
+        }
+
+        .button_sl {
+          display: block;
+          position: absolute;
+          top: 0;
+          bottom: -1px;
+          left: -8px;
+          width: 0;
+          background-color: #ff4655;
+          transform: skew(-15deg);
+          transition: all .2s ease;
+        }
+
+        .button_text {
+          position: relative;
+        }
+
+        .button:hover {
+          color: #0f1923;
+        }
+
+        .button:hover .button_sl {
+          width: calc(100% + 15px);
+        }
+
+        .button:hover .button_lg::after {
+          background-color: #fff;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        @keyframes shake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+
+    <div class="container" id="result-container">
+        <div class="emoji" id="emoji">❓</div>
+        <h1 id="result-message"></h1>
+        <p id="advice"></p>
+
+        <!-- شريط النسبة -->
+        <div class="progress-wrapper" aria-label="Heart disease risk percentage">
+            <div class="progress-bar" id="risk-bar">0%</div>
+        </div>
+
+        <!-- قسم التوصيات -->
+        <div class="recommendation" id="recommendation-section" style="display:none;">
+            <h3>Recommendations:</h3>
+            <ul id="recommendations-list" style="padding-left: 20px; margin: 10px 0 0 0;">
+            </ul>
+        </div>
+
+        <!-- زر تحميل PDF الجديد -->
+        <form action="{{ url_for('download_pdf') }}" method="get" style="margin-bottom:20px;">
+            <button type="submit" class="button">
+                <span class="button_lg">
+                    <span class="button_sl"></span>
+                    <span class="button_text">📄 Download Now</span>
+                </span>
+            </button>
+        </form>
+
+        <button class="back-button" onclick="history.back()">🔙 Go Back</button>
+    </div>
+
+    <script>
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 1000 }},
+                color: { value: '#ff1493' },
+                shape: { type: 'edge' },
+                opacity: { value: 0.6, random: false },
+                size: { value: 30, random: true },
+                line_linked: { enable: true, distance: 350, color: '#ff1493', opacity: 0.8, width: 3 },
+                move: { enable: true, speed: 1.2, direction: 'none', random: false, straight: false, bounce: false }
+            },
+            interactivity: {
+                detect_on: 'canvas',
+                events: { onhover: { enable: true, mode: 'grab' }, onclick: { enable: true, mode: 'push' }},
+                modes: { grab: { distance: 300, line_linked: { opacity: 1 }}, push: { particles_nb: 5 }}
+            },
+            retina_detect: true
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const result = "{{ msg }}";  // النتيجة النصية من السيرفر
+            const riskPercent = parseFloat("{{ risk_percent }}") || 0; // النسبة مئوية من السيرفر (مثلاً 75.3)
+
+            const container = document.getElementById("result-container");
+            const message = document.getElementById("result-message");
+            const emoji = document.getElementById("emoji");
+            const advice = document.getElementById("advice");
+            const riskBar = document.getElementById("risk-bar");
+            const recommendationSection = document.getElementById("recommendation-section");
+            const recommendationsList = document.getElementById("recommendations-list");
+
+            // نعرض نسبة الخطر في الشريط
+            riskBar.style.width = riskPercent + "%";
+            riskBar.textContent = riskPercent.toFixed(1) + "%";
+
+            // بناء التوصيات بناء على النتيجة
+            let recommendations = [];
+            if (result.includes("Presence")) {
+                container.classList.add("danger");
+                container.style.animation = "shake 0.5s ease-in-out 3";
+                emoji.innerHTML = "⚠️";
+                message.innerHTML = "Unfortunately, the result indicates potential heart disease.";
+                advice.innerHTML = "<b>Please consult a doctor immediately!</b> Early detection can save lives.";
+                recommendations = [
+                    "Visit a cardiologist promptly.",
+                    "Maintain a healthy diet low in saturated fats.",
+                    "Engage in regular physical activity.",
+                    "Avoid smoking and limit alcohol consumption.",
+                    "Monitor blood pressure and cholesterol levels regularly."
+                ];
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Warning! 🚨',
+                    text: 'Potential heart disease detected. Please seek medical advice.',
+                    showConfirmButton: true
+                });
+            } else {
+                container.classList.add("safe");
+                emoji.innerHTML = "🎉";
+                message.innerHTML = "Great News! No signs of heart disease detected.";
+                advice.innerHTML = "<b>Keep maintaining a healthy lifestyle!</b> Regular exercise and a balanced diet are key.";
+                recommendations = [
+                    "Continue regular check-ups.",
+                    "Maintain a balanced diet.",
+                    "Stay physically active.",
+                    "Avoid excessive stress.",
+                    "Follow medical advice if any symptoms appear."
+                ];
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Congratulations! ❤️',
+                    text: 'No signs of heart disease. Stay healthy and positive! 😊',
+                    showConfirmButton: true
+                });
+            }
+
+            // عرض التوصيات
+            recommendationsList.innerHTML = "";
+            recommendations.forEach(item => {
+                let li = document.createElement("li");
+                li.textContent = item;
+                recommendationsList.appendChild(li);
+            });
+            recommendationSection.style.display = "block";
+        });
+    </script>
+</body>
+</html>

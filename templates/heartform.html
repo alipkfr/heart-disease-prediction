@@ -1,0 +1,192 @@
+{% extends "index.html" %}
+{% block main %}
+
+<br>
+<br>
+<br>
+
+			<div class="container">
+				
+        
+                <form action='/heartform' class='main-form needs-validation' method="POST" enctype="multipart/form-data">
+                    <h3>Enter the Following parameters :</h3>
+                    <hr>
+                        <div class="col-md-4 col-md-offset-4">
+                            
+                                <label for="firstname">Firstname</label>
+                                <input type="text" name="firstname" id="firstname" class="form-control" required='True'>
+                           
+                        </div>
+                        <div class="col-md-4 col-md-offset-4">
+                            
+                                <label for="lastname">Lastname</label>
+                                <input type="text" name="lastname" id="lastname" class="form-control" required='True'>
+                            
+                        </div>
+                    
+            
+            
+                    <div class="col-md-4 col-md-offset-4">
+                        <label for="phone">Phone No.</label>
+                        <input type="number" name="phone" id="phone" class="form-control" required='True'>
+                        <small class='form-text ' style='color: #FFFFFF;'>* Include your area code</small>
+                    </div>
+            
+            
+            
+                    
+                        
+                            <div class="col-md-4 col-md-offset-4">
+                                <label for="email">Email</label>
+                                <input type="email" name="email" id="email" class="form-control" required='True'>
+                            </div>
+                        
+                        <div class="col-md-4 col-md-offset-4"class="col">
+                            
+                                <label for="gender">Gender</label>
+                                <select name="gender" id="gender" class="form-control" required='True'>
+                                    <option value="1">Male</option>
+                                    <option value="0">Female</option>
+                                </select>
+                        </div>
+                    
+            
+            
+                    
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="op">Old Peak</label>
+                            <input type="number" step='any' required='True' name='op' id='op' class='form-control' required='True'>
+                        </div>
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="mhra">Max. Heart Rate achieved</label>
+                            <input type='number' step="any" required='True' name='mhra' id='mhra' class='form-control' required='True'>
+                        </div>
+            
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="eia">Exercise induced angina</label>
+                            <select required='True' name='eia' id='eia' class='form-control' required='True'>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            </select>
+                        </div>
+                    
+            
+            
+                    
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="nmv"> No. of major vessels</label>
+                            <select required='True' name='nmv' id='nmv' class='form-control' required='True'>
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="tcp">Type of Chest Pain</label>
+                            <select  required='True' name='tcp' id='tcp' class='form-control' required='True'>
+                                <option value="0">typical angina</option>
+                                <option value="1">atypical angina</option>
+                                <option value="2">non-anginal pain</option>
+                                <option value="3">asymptomatic</option>
+                            </select>
+                        </div>
+            
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="age">Age</label>
+                            <input type="number" name="age" id="age" class="form-control" required='True'>
+                        </div>
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="thal">Thal</label>
+                            <select required='True' name='thal' id='thal' class='form-control' required='True'>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                            </select>
+                        </div>
+                    
+            
+                    
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="smc" place> Serum Cholestoral</label>
+                            <input type="number" name="smc" id="age" class="form-control" required='True' placeholder="mg/dl">
+                        </div>
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="fbs">Fasting Blood Sugar</label>
+                            <select  required='True' name='fbs' id='fbs' class='form-control' required='True'>
+                                <option value="0">no</option>
+                                <option value="1">yes</option>
+                               
+                            </select>
+                        </div>
+            
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="rbp">Resting Blood Pressure</label>
+                            <input type="number" name="rbp" id="rbp" class="form-control" required='True' >
+                        </div>
+
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="recg" class="form-label">Resting Electro-cardiographic Result</label>
+                            <select class="form-control" type="number" id="recg" name="recg" required='True' placeholder="Resting Electro-cardiographic Result">
+                            <option value="0">Normal</option>
+                            <option value="1">having ST-T wave abnormality</option>
+                            <option value="2">showing probable or definite left ventricular hypertrophy</option>
+                            </select>
+                          </div>
+            
+                        <div class="col-md-4 col-md-offset-4">
+                            <label for="slopee">The slope of the peak exercise ST segment</label>
+                            <select required='True' name='slopee' id='slopee' class='form-control' required='True'>
+                                <option value="1">0</option>
+                                <option value="2">1</option>
+                                <option value="3">2</option>
+                            </select>
+                        </div>
+                    
+            
+            
+            
+            
+            
+                    <div class='text-center'>
+                        <button type='submit' class='btn' style='width:700px;margin-top: 30px;background: black;color: white;'> Submit
+                        </button>
+                    </div>
+            
+            
+            
+                </form>
+            
+			
+					
+				
+			</div>
+			<br>
+			<br>
+			<br>
+			
+			<br>
+		  	<br>
+		  	<br>
+		  	<br>
+
+		</div>
+		
+
+{% endblock %}
+
+
+
+
+
+
+

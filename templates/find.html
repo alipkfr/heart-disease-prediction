@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Predict Heart Disease</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
+
+  <style>
+    * {
+      font-size: 18px;
+      transition: all 0.3s ease;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background-color: #121212;
+      font-family: 'Arial', sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    #particles-js {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      top: 0;
+      left: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 10;
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 40px;
+      min-height: 100vh;
+      justify-content: center;
+    }
+
+    .heart-image {
+      width: 320px;
+      border-radius: 50%;
+      box-shadow: 0 0 20px 8px #ff1493;
+      animation: pulseEffect 2.5s infinite ease-in-out;
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+    }
+
+    .title-box {
+      background: #fff;
+      padding: 12px 40px;
+      border-radius: 40px;
+      box-shadow: 0 0 12px 3px #ff1493, 0 0 20px 6px #ff63a7;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    h5.heart-title {
+      font-weight: 900;
+      font-size: 28px;
+      color: #ff1493;
+      letter-spacing: 0.12em;
+      margin: 0;
+    }
+	.welcome-box {
+		background: rgba(255, 255, 255, 0.08);
+		padding: 25px 60px;
+		border-radius: 50px;
+		box-shadow: 0 0 8px 2px #ff1493cc, 0 0 14px 5px #ff63a7cc;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		min-width: 420px;
+		min-height: 120px;
+		max-width: 100%;
+		overflow: hidden;
+		margin-bottom: 10px;
+	  }
+	  
+	  h1.welcome-text {
+		font-size: 64px;
+		font-weight: 900;
+		margin: 0;
+		color: #fff;
+		text-shadow:
+		  0 0 12px #ff4b79,
+		  0 0 24px #ff1493,
+		  0 0 28px #ff1493;
+		line-height: 1.2;
+	  }
+	  
+	  .welcome-text .welcome-msg,
+	  .welcome-text .user-name {
+		font-size: inherit;
+		color: #ffffff;
+		text-shadow:
+		  0 0 12px #ff4b79,
+		  0 0 20px #ff1493;
+	  }
+
+    .intro-text {
+      font-size: 20px;
+      font-weight: 900;
+      background: rgba(0, 0, 0, 0.6);
+      padding: 15px 30px;
+      border-radius: 30px;
+      box-shadow: 0 0 8px 2px #ff1493cc, 0 0 12px 4px #ff63a7cc;
+      color: #fff;
+      margin-bottom: 35px;
+      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .intro-text b {
+      font-weight: 900;
+      margin-left: 5px;
+    }
+
+    .intro-text::before {
+      content: "🩺";
+      font-size: 24px;
+      color: #ff1493;
+    }
+
+    form {
+      width: 100%;
+      max-width: 400px;
+      text-align: left;
+    }
+
+    .input-wrapper {
+      position: relative;
+      margin-bottom: 25px;
+    }
+
+    input[type="number"], input[type="text"] {
+      width: 100%;
+      padding: 16px 35px;
+      font-size: 18px;
+      border-radius: 50px;
+      border: 2px solid #ff1493;
+      background-color: #fff;
+      color: #000;
+      box-shadow: 0 0 16px #ff1493aa inset;
+      transition: box-shadow 0.3s ease, border-color 0.3s ease;
+      display: block;
+      user-select: text;
+    }
+
+    input[type="number"]:focus, input[type="text"]:focus {
+      border-color: #ff4b79;
+      box-shadow: 0 0 32px #ff4b79, 0 0 12px #ff1493 inset;
+      background-color: #ffe6f0;
+      outline: none;
+    }
+
+    .range-text {
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 14px;
+      font-weight: 700;
+      color: #ff1493;
+      text-shadow: 0 0 8px #ff1493cc;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    h4 {
+      color: #ff1493;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .radio-group {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 20px;
+      margin-bottom: 35px;
+    }
+
+    .radio-group label {
+      font-size: 20px;
+      color: #ff1493;
+      font-weight: 700;
+      cursor: pointer;
+      transition: color 0.3s ease;
+      user-select: none;
+    }
+
+    .radio-group label:hover {
+      color: #ff7eb3;
+    }
+
+    .radio-group input[type="radio"] {
+      transform: scale(1.4);
+      margin-right: 10px;
+      cursor: pointer;
+    }
+
+    #submit {
+      width: 100%;
+      font-weight: 900;
+      font-size: 22px;
+      padding: 18px 0;
+      border-radius: 50px;
+      background-color: #121212;
+      color: #fff;
+      border: none;
+      box-shadow: 0 8px 25px rgba(255,20,147,0.8);
+      cursor: pointer;
+      transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+      user-select: none;
+    }
+
+    #submit:hover {
+      background: linear-gradient(45deg, #ff6a00, #ff1493);
+      transform: scale(1.1);
+      box-shadow: 0 12px 35px rgba(255,20,147,1);
+    }
+
+    #submit:active {
+      transform: scale(0.95);
+      box-shadow: 0 6px 20px rgba(255,20,147,0.6);
+    }
+
+    .loader {
+      border: 6px solid #f3f3f3;
+      border-top: 6px solid #ff1493;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      display: none;
+      margin: 20px auto 10px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes pulseEffect {
+      0% {transform: scale(1);}
+      50% {transform: scale(1.1);}
+      100% {transform: scale(1);}
+    }
+  </style>
+</head>
+
+<body>
+  <div id="particles-js"></div>
+
+  <div class="container">
+    <img class="heart-image" src="https://i.pinimg.com/564x/f8/52/9c/f8529c3ee32672146fb127cf1e27af54.jpg" alt="Heart" />
+    
+    <div class="title-box">
+      <h5 class="heart-title">Heart Disease Prediction</h5>
+    </div>
+
+    <div class="welcome-box">
+      <h1 class="welcome-text">
+        <span class="welcome-msg">Welcome</span>
+        <span class="user-name">{{ name }}</span>
+      </h1>
+    </div>
+
+    <p class="intro-text"><b>Please fill</b> in the form below to check your heart health!</p>
+
+    <form action="/check" method="POST" autocomplete="off">
+      <div class="input-wrapper">
+        <input type="number" name="age" placeholder="Enter Age" required id="entry" min="30" max="80" />
+        <div class="range-text">30 - 80</div>
+      </div>
+
+      <h4>Chest Pain Type:</h4>
+      <div class="radio-group">
+        <label><input type="radio" name="r1" value="1" checked /> 1</label>
+        <label><input type="radio" name="r1" value="2" /> 2</label>
+        <label><input type="radio" name="r1" value="3" /> 3</label>
+        <label><input type="radio" name="r1" value="4" /> 4</label>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="BP" placeholder="Enter BP" required id="entry" min="90" max="200" />
+        <div class="range-text">90 - 200</div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="CH" placeholder="Enter Cholesterol" required id="entry" min="100" max="400" />
+        <div class="range-text">100 - 400</div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="maxhr" placeholder="Enter Max Heart Rate" required id="entry" min="60" max="200" />
+        <div class="range-text">60 - 200</div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="STD" placeholder="Enter ST Depression" step="any" required id="entry" min="0" max="5" />
+        <div class="range-text">0 - 5</div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="fluro" placeholder="Enter Number of Vessels Fluoro" step="any" required id="entry" min="0" max="3" />
+        <div class="range-text">0 - 3</div>
+      </div>
+
+      <div class="input-wrapper">
+        <input type="number" name="Th" placeholder="Thallium" required id="entry" min="0" max="3" />
+        <div class="range-text">0 - 3</div>
+      </div>
+
+      <input type="submit" value="Predict" id="submit" />
+      <div class="loader" id="loadingSpinner"></div>
+    </form>
+  </div>
+
+  <script>
+    particlesJS('particles-js', {
+      particles: {
+        number: { value: 80, density: { enable: true, value_area: 1000 } },
+        color: { value: '#ff1493' },
+        shape: { type: 'edge' },
+        opacity: { value: 0.6, random: false },
+        size: { value: 30, random: true },
+        line_linked: {
+          enable: true,
+          distance: 350,
+          color: '#ff1493',
+          opacity: 0.8,
+          width: 3
+        },
+        move: {
+          enable: true,
+          speed: 1.2,
+          direction: 'none',
+          random: false,
+          straight: false,
+          bounce: false
+        }
+      },
+      interactivity: {
+        detect_on: 'canvas',
+        events: {
+          onhover: { enable: true, mode: 'grab' },
+          onclick: { enable: true, mode: 'push' }
+        },
+        modes: {
+          grab: { distance: 300, line_linked: { opacity: 1 } },
+          push: { particles_nb: 5 }
+        }
+      },
+      retina_detect: true
+    });
+
+    const form = document.querySelector('form');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    const submitBtn = document.getElementById('submit');
+
+    form.addEventListener('submit', function() {
+      loadingSpinner.style.display = 'block';
+      submitBtn.disabled = true;
+      submitBtn.style.opacity = '0.6';
+    });
+  </script>
+</body>
+</html>
